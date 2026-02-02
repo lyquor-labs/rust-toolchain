@@ -1,0 +1,8 @@
+change-id = 148795
+profile = "dist"   # Includes one of the default files in src/bootstrap/defaults
+
+[llvm]
+download-ci-llvm = true
+
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "target-feature=+atomics"]
