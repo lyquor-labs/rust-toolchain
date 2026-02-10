@@ -5,4 +5,4 @@ profile = "dist"   # Includes one of the default files in src/bootstrap/defaults
 download-ci-llvm = true
 
 [target.wasm32-unknown-unknown]
-rustflags = ["-C", "target-feature=+atomics"]
+rustflags = ["-Ctarget-feature=+atomics", "-Cpanic=unwind", "-Cllvm-args=-wasm-use-legacy-eh=false"]
