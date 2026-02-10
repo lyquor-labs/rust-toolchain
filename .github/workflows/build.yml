@@ -18,8 +18,8 @@ jobs:
       - name: Checkout rust-lang/rust
         uses: actions/checkout@v6
         with:
-          repository: rust-lang/rust
-          ref: 1.93.0
+          repository: lyquor-labs/rust
+          ref: 1.93.0-wasm
           path: rust
           fetch-depth: 2
 
