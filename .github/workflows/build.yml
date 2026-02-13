@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-wasm32-std:
     name: Build rust-std (wasm32)
@@ -32,3 +35,23 @@ jobs:
         with:
           name: rust-std-dist-wasm32
           path: rust/build/dist
+
+      - name: Prepare release metadata
+        id: release_meta
+        run: |
+          set -euo pipefail
+          release_date="$(date -u +'%Y%m%d')"
+          release_branch="${GITHUB_REF_NAME//\//-}"
+          release_tag="${release_branch}-${release_date}"
+          echo "tag=${release_tag}" >> "$GITHUB_OUTPUT"
+          echo "name=${release_tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Create release and upload dist assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_meta.outputs.tag }}
+          name: ${{ steps.release_meta.outputs.name }}
+          files: rust/build/dist/*
+          body: ""
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
