@@ -18,8 +18,8 @@ jobs:
       - name: Checkout rust-lang/rust
         uses: actions/checkout@v6
         with:
-          repository: lyquor-labs/rust
-          ref: 1.94.0-wasm
+          repository: rust-lang/rust
+          ref: 1.95.0
           path: rust
           fetch-depth: 2
 
@@ -50,6 +50,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_meta.outputs.tag }}
+          target_commitish: ${{ github.sha }}
           name: ${{ steps.release_meta.outputs.name }}
           files: rust/build/dist/*
           body: ""
