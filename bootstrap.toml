@@ -6,8 +6,8 @@ download-ci-llvm = true
 
 [target.wasm32-unknown-unknown]
 rustflags = [
-    "-Ctarget-feature=+atomics",
+    "-Ctarget-feature=+atomics,+exception-handling",
     "-Cpanic=unwind",
     "-Cllvm-args=-wasm-use-legacy-eh=false",
-    "-Cllvm-args=-wasm-enable-eh=true",
+    "-Cllvm-args=-wasm-enable-eh",
 ]
