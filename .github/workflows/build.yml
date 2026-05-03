@@ -8,8 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  build-wasm32-std:
-    name: Build rust-std (wasm32)
+  build-wasm64-std:
+    name: Build rust-std (wasm64)
     runs-on: ubuntu-22.04-arm64-large
     steps:
       - name: Checkout repo
@@ -26,14 +26,14 @@ jobs:
       - name: Copy bootstrap.toml
         run: cp bootstrap.toml rust/bootstrap.toml
 
-      - name: Build rust-std for wasm32-unknown-unknown
+      - name: Build rust-std for wasm64-unknown-unknown
         working-directory: rust
-        run: ./x dist rust-std --target wasm32-unknown-unknown
+        run: ./x dist rust-std --target wasm64-unknown-unknown
 
       - name: Upload dist artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: rust-std-dist-wasm32
+          name: rust-std-dist-wasm64
           path: rust/build/dist
 
       - name: Prepare release metadata
