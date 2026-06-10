@@ -1,6 +1,6 @@
 # Rust std (wasm32) build workflow
 
-This repository contains a GitHub Actions workflow that checks out `rust-lang/rust` at tag `1.93.0`, copies in `bootstrap.toml`, builds `rust-std` for `wasm32-unknown-unknown`, and uploads artifacts from `rust/build/dist`.
+This repository contains a GitHub Actions workflow that checks out `rust-lang/rust` at tag `1.96.0`, copies in `bootstrap.toml`, builds `rust-std` for `wasm32-unknown-unknown`, and uploads artifacts from `rust/build/dist`.
 
 ## Local testing
 
