@@ -2,7 +2,7 @@
 
 ## Repo purpose
 
-This repo is a minimal wrapper around a GitHub Actions workflow that builds `rust-std` for `wasm32-unknown-unknown` from `rust-lang/rust` tag `1.96.0` and uploads artifacts from `rust/build/dist`.
+This repo is a minimal wrapper around a GitHub Actions workflow that builds `rust-std` for `wasm32-unknown-unknown` from `rust-lang/rust` tag `1.97.0` and uploads artifacts from `rust/build/dist`.
 
 ## Local testing
 
