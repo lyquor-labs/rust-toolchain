@@ -2,7 +2,7 @@
 
 ## Repo purpose
 
-This repo is a minimal wrapper around a GitHub Actions workflow that builds `rust-std` for `wasm32-unknown-unknown` from `rust-lang/rust` tag `1.97.0` and uploads artifacts from `rust/build/dist`.
+This repo is a minimal wrapper around a GitHub Actions workflow on `main` that builds atomics and unwind variants of `rust-std` for `wasm32-unknown-unknown`. The shared Rust tag is set by `RUST_VERSION` in `.github/workflows/build.yml`; variant configs live in `atomics/bootstrap.toml` and `unwind/bootstrap.toml`. Each build uploads artifacts from `rust/build/dist` and publishes its variant's release when run on `main`.
 
 ## Local testing
 

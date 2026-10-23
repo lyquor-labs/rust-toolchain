@@ -2,15 +2,25 @@ name: Build
 
 on:
   push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
+
+env:
+  RUST_VERSION: 1.99.0
 
 permissions:
   contents: write
 
 jobs:
   build-wasm32-std:
-    name: Build rust-std (wasm32)
+    name: Build rust-std (wasm32, ${{ matrix.variant }})
     runs-on: ubuntu-22.04-arm64-large
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [atomics, unwind]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -19,12 +29,12 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: rust-lang/rust
-          ref: 1.97.0
+          ref: ${{ env.RUST_VERSION }}
           path: rust
           fetch-depth: 2
 
       - name: Copy bootstrap.toml
-        run: cp bootstrap.toml rust/bootstrap.toml
+        run: cp "${{ matrix.variant }}/bootstrap.toml" rust/bootstrap.toml
 
       - name: Build rust-std for wasm32-unknown-unknown
         working-directory: rust
@@ -33,7 +43,7 @@ jobs:
       - name: Upload dist artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: rust-std-dist-wasm32
+          name: rust-std-dist-wasm32-${{ matrix.variant }}
           path: rust/build/dist
 
       - name: Prepare release metadata
@@ -41,17 +51,16 @@ jobs:
         run: |
           set -euo pipefail
           release_date="$(date -u +'%Y%m%d')"
-          release_branch="${GITHUB_REF_NAME//\//-}"
-          release_tag="${release_branch}-${release_date}"
+          release_tag="${{ matrix.variant }}-${release_date}"
           echo "tag=${release_tag}" >> "$GITHUB_OUTPUT"
-          echo "name=${release_tag}" >> "$GITHUB_OUTPUT"
 
       - name: Create release and upload dist assets
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_meta.outputs.tag }}
           target_commitish: ${{ github.sha }}
-          name: ${{ steps.release_meta.outputs.name }}
+          name: ${{ steps.release_meta.outputs.tag }}
           files: rust/build/dist/*
           body: ""
         env:

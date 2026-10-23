@@ -1,6 +1,13 @@
 # Rust std (wasm32) build workflow
 
-This repository contains a GitHub Actions workflow that checks out `rust-lang/rust` at tag `1.97.0`, copies in `bootstrap.toml`, builds `rust-std` for `wasm32-unknown-unknown`, and uploads artifacts from `rust/build/dist`.
+This repository builds two variants of `rust-std` for `wasm32-unknown-unknown` in one GitHub Actions workflow on `main`:
+
+- `atomics/bootstrap.toml` enables atomics.
+- `unwind/bootstrap.toml` enables atomics and exception handling with panic unwinding.
+
+Both matrix jobs check out the same `rust-lang/rust` tag, set by `RUST_VERSION` in `.github/workflows/build.yml`. Update that value once to update both builds. Each job copies its variant's config to `rust/bootstrap.toml` and uploads `rust/build/dist` as `rust-std-dist-wasm32-atomics` or `rust-std-dist-wasm32-unwind`.
+
+Pushes and pull requests to `main` build both variants; the workflow can also be run manually. Runs on `main` publish separate `atomics-YYYYMMDD` and `unwind-YYYYMMDD` releases, preserving the existing release tags and archive filenames. Pull requests and manual runs on other branches only build and upload workflow artifacts.
 
 ## Local testing
 
